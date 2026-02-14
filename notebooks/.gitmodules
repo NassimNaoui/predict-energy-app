@@ -1,0 +1,3 @@
+[submodule "predict-energy-consumption"]
+	path = predict-energy-consumption
+	url = https://github.com/NassimNaoui/predict-energy-consumption.git
