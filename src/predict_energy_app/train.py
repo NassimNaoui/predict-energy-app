@@ -1,5 +1,5 @@
 import pandas as pd
-import joblib
+import bentoml
 from pathlib import Path
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.linear_model import LinearRegression
@@ -46,6 +46,26 @@ def train():
         model_name = type(model).__name__
         print(f"{model_name} - MAE: {mean_absolute_error(y_test, predictions):.2f}")
         print(f"{model_name} - R² Score: {r2_score(y_test, predictions):.2f}")
+
+    # 7. Enregistrement des modèles
+    
+    # --- Enregistrement de la Régression Linéaire  ---
+    bentoml.sklearn.save_model(
+        "energy_regressor_lr", 
+        lr,
+        custom_objects={"preprocessor": preprocessor},
+        signatures={"predict": {"batchable": False}}
+    )
+
+    # --- Enregistrement du Random Forest ---
+    bentoml.sklearn.save_model(
+        "energy_regressor_rf", 
+        rfr,
+        custom_objects={"preprocessor": preprocessor},
+        signatures={"predict": {"batchable": False}}
+    )
+
+    print("Modèles enregistrés !")
 
 
 if __name__ == "__main__":
