@@ -1,12 +1,12 @@
 from pydantic import BaseModel, Field
 from enum import Enum
-from typing import Optional
+
 
 class PropertyType(str, Enum):
     HOTEL = "Hotel"
     SCHOOL = "K-12 School"
     UNIVERSITY = "University"
-    OFFICE_SMALL = "Small- and Mid-Sized Office"
+    OFFICE_MID = "Small- and Mid-Sized Office"
     SELF_STORAGE = "Self-Storage Facility"
     WAREHOUSE = "Warehouse"
     OFFICE_LARGE = "Large Office"
@@ -21,34 +21,37 @@ class PropertyType(str, Enum):
     REFRIGERATED_WAREHOUSE = "Refrigerated Warehouse"
     RESTAURANT = "Restaurant"
 
+
 class EnergyInput(BaseModel):
-    # Données catégorielles (via l'Enum)
+    # --- Données Catégorielles ---
     PrimaryPropertyType: PropertyType = Field(
-        ..., 
-        description="Type principal de bâtiment (doit être l'une des catégories connues)"
+        ..., description="Type d'usage principal du bâtiment"
     )
-    
-    # Données numériques avec validations de base
-    Latitude: float = Field(..., example=47.6062)
-    Longitude: float = Field(..., example=-122.3321)
-    YearBuilt: int = Field(..., ge=1900, le=2026, description="Année de construction")
-    NumberofBuildings: int = Field(default=1, ge=0)
-    NumberofFloors: int = Field(default=1, ge=0)
-    PropertyGFATotal: float = Field(..., gt=0, description="Surface totale au sol")
-    
-    # Champ optionnel pour éviter que define_scope ne crash
-    Outlier: Optional[str] = Field(default=None, description="Laisser vide")
+
+    # --- Données Numériques ---
+    PropertyGFATotal: float = Field(
+        ..., gt=0, description="Surface totale du bâtiment (en pieds carrés)"
+    )
+    PropertyGFAParking: float = Field(
+        default=0, ge=0, description="Surface dédiée au parking"
+    )
+    NumberofBuildings: int = Field(
+        default=1, ge=1, description="Nombre de bâtiments sur la parcelle"
+    )
+    NumberofFloors: int = Field(default=1, ge=1, description="Nombre d'étages")
+    YearBuilt: int = Field(
+        ..., ge=1850, le=2026, description="Année de construction originelle"
+    )
 
     class Config:
-        # Permet d'afficher un exemple complet dans Swagger
+        # L'exemple qui apparaîtra directement dans l'interface Swagger
         json_schema_extra = {
             "example": {
-                "PrimaryPropertyType": "Hotel",
-                "Latitude": 47.612,
-                "Longitude": -122.332,
-                "YearBuilt": 1927,
+                "PrimaryPropertyType": "Large Office",
+                "PropertyGFATotal": 150000.0,
+                "PropertyGFAParking": 25000.0,
                 "NumberofBuildings": 1,
-                "NumberofFloors": 11,
-                "PropertyGFATotal": 200000.0
+                "NumberofFloors": 12,
+                "YearBuilt": 1985,
             }
         }
