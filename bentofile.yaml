@@ -1,0 +1,20 @@
+service: "src.predict_energy_app.service:EnergyService"
+description: "Modèle de prédiction de la consommation d'énergie des bâtiments non résidentiels de Seattle"
+labels:
+  owner: nassim
+  project: seattle_energy
+
+include:
+  - "src/" 
+  - "data/"
+
+python:
+  packages:
+    - scikit-learn
+    - pandas
+    - numpy
+    - pydantic
+
+envs:
+  - name: PYTHONPATH
+    value: "src"
