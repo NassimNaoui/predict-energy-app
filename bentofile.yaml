@@ -4,9 +4,13 @@ labels:
   owner: nassim
   project: seattle_energy
 
+models:
+  - "energy_regressor_rfr:latest"
+
 include:
-  - "src/" 
+  - "src/"
   - "data/"
+  - "pyproject.toml"
 
 python:
   packages:
@@ -14,7 +18,8 @@ python:
     - pandas
     - numpy
     - pydantic
+    - bentoml 
 
-envs:
-  - name: PYTHONPATH
-    value: "src"
+docker:
+  env:
+    PYTHONPATH: "/home/bentoml/bento/src"

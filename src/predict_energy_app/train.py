@@ -6,8 +6,8 @@ from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import mean_absolute_error, r2_score
 
-# Assure-toi que le chemin est correct selon ton arborescence
-from src.predict_energy_app.preprocess import Preprocess
+
+from predict_energy_app.preprocess import Preprocess
 
 
 def train():

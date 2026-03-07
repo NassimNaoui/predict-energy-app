@@ -1,6 +1,18 @@
+import sys
+import os
+from pathlib import Path
+
+src_path = str(Path(__file__).resolve().parent.parent)
+
+if src_path not in sys.path:
+    sys.path.insert(0, src_path)
+
+
 import bentoml
 import pandas as pd
 import numpy as np
+
+
 from predict_energy_app.schema import EnergyInput
 
 # On définit le nom du modèle enregistré dans le store BentoML
